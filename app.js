@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-
+app.use('/api/v1/auth', authRouter);
 app.use('/api/users', userRouter);
 
 
@@ -24,10 +24,11 @@ app.use('/api/users', userRouter);
 
 
 app.get('/', (req, res) => {
-    res.send(`Hello World! Server is running. Port: ${PORT}`);
+  res.send(`Hello World! Server is running. Port: ${PORT}`);
 });
 
 
+app.use(errorMiddleware);
 
 
 
