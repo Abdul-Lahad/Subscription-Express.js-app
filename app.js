@@ -19,6 +19,8 @@ app.use(cookieParser());
 
 app.use(arcjetMiddleware);
 
+
+app.use('/api/v1/subscriptions', subscriptionRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 
