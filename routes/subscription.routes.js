@@ -1,40 +1,33 @@
 import { Router } from "express";
 import authorize from "../middleware/auth.middleware.js";
-import { createSubscription, getUserSubscriptionById } from "../controller/subscription.controller.js";
+import { createSubscription,
+        getUserSubscriptionById, 
+        getAllSubscriptions,
+        getSubscriptionById,
+        updateSubscriptionById,
+        deleteSubscriptionById,
+        cancelSubscriptionByUserId,
+        getAllUpcommingRenewals
+    } from "../controller/subscription.controller.js";
+
 
 
 const subscriptionRouter = Router();
 
-subscriptionRouter.get("/", (req, res)=>{
-    res.send({title: "GET all subscriptions"});
-})
+subscriptionRouter.get("/", authorize, getAllSubscriptions)
 
-subscriptionRouter.get("/:id", authorize, getUserSubscriptionById )
+subscriptionRouter.get("/:id", authorize, getSubscriptionById)
 
 subscriptionRouter.post('/',authorize , createSubscription);
 
-subscriptionRouter.put("/:id", (req, res)=>{
-    const {id} = req.params;
-    res.send({title: `UPDATE subscription with id: ${id}`});
-})
+subscriptionRouter.put("/:id", authorize, updateSubscriptionById);
 
-subscriptionRouter.delete("/:id", (req, res)=>{
-    const {id} = req.params;
-    res.send({title: `DELETE subscription with id: ${id}`});
-})
+subscriptionRouter.delete("/:id", authorize, deleteSubscriptionById);
 
-subscriptionRouter.get("/user/:userId", (req, res)=>{
-    const {userId} = req.params;
-    res.send({title: `GET subscriptions for user with id: ${userId}`});
-})
+subscriptionRouter.get("/user/:id", getUserSubscriptionById)
 
-subscriptionRouter.put("/user/:userId/cancel", (req, res)=>{
-    const {userId} = req.params;
-    res.send({title: `CANCEL subscription for user with id: ${userId}`});
-})
+subscriptionRouter.put("/user/:userId/cancel", authorize, cancelSubscriptionByUserId)
 
-subscriptionRouter.get('/upcoming-renewals', (req, res)=>{
-    res.send({title: "GET all upcoming subscription renewals"});
-})
+subscriptionRouter.get('/upcoming-renewals', authorize, getAllUpcommingRenewals)
 
 export default subscriptionRouter;
